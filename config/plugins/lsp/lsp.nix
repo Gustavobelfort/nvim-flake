@@ -107,10 +107,6 @@
           enable = true;
           installLanguageServer = true;
         };
-        nushell = {
-          enable = true;
-          installLanguageServer = true;
-        };
         yamlls = {
           enable = true;
           installLanguageServer = true;
