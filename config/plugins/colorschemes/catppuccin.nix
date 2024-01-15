@@ -1,5 +1,5 @@
 {
-  colorschemes.nord = {
+  colorschemes.catppuccin = {
     enable = true;
     contrast = true;
     borders = true;
