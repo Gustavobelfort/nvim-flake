@@ -295,6 +295,12 @@
         action = "^";
         options.silent = true;
       }
+      {
+        mode = "n";
+        key = "<C-S>";
+        action = "<cmd>lua require("/spectre"/).toggle()<CR>";
+        options.silent = true;
+      }
     ];
   };
 }

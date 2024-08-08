@@ -30,5 +30,6 @@
     ./utils/todo-comments.nix
     ./utils/markdown-preview.nix
     ./utils/autopairs.nix
+    ./utils/spectre.nix
   ];
 }
