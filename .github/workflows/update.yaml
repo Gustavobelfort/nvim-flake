@@ -4,26 +4,31 @@ on:
   schedule:
     - cron: "0 0 * * 5"
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   lockfile:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Install Nix
-        uses: cachix/install-nix-action@v16
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@main
+      - id: update
+        uses: DeterminateSystems/update-flake-lock@main
         with:
-          extra_nix_config: |
-            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
-      - name: Update flake.lock
-        uses: DeterminateSystems/update-flake-lock@v16
-        with:
-          pr-title: "flake: update the lock" # Title of PR to be created
-          pr-labels: | # Labels to be set on the PR
+          pr-title: "flake: update the lock"
+          pr-labels: |
             dependencies
             automated
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: peter-evans/enable-pull-request-automerge@v3
+      # Build and start the config before the PR can merge: Nixvim renames
+      # options often enough that a lock bump regularly breaks evaluation.
+      - run: nix flake check -L
+      # The PR number comes from the step above. The old workflow read it from
+      # github.event.pull_request, which is empty on a scheduled run, so
+      # automerge never actually fired.
+      - if: steps.update.outputs.pull-request-number != ''
+        uses: peter-evans/enable-pull-request-automerge@v3
         with:
-          pull-request-number: ${{ github.event.pull_request.number }}
+          pull-request-number: ${{ steps.update.outputs.pull-request-number }}
           merge-method: squash

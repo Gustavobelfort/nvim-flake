@@ -1,6 +1,6 @@
 {
   plugins.bufferline = {
     enable = true;
-    themable = true;
+    settings.options.themable = true;
   };
 }

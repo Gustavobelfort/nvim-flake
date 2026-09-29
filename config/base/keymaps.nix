@@ -1,306 +1,76 @@
-{
-  config = {
-    globals = {
-      mapleader = " ";
-    };
-    keymaps = [
-      {
-        mode = "";
-        key = "<Space>";
-        action = "<Nop>";
-        options.silent = true;
-      }
-      {
-        mode = "n";
-        key = "S";
-        action = ":w<CR>";
-        options.desc = "save file";
-        options.silent = true;
-      }
-      {
-        mode = "n";
-        key = "Q";
-        action = ":qa<CR>";
-        options.desc = "quit neovim";
-        options.silent = true;
-      }
-      {
-        mode = "i";
-        key = "jk";
-        action = "<ESC>";
-        options.desc = "exit insert mode";
-        options.silent = true;
-      }
-      # Better window navigation
-      {
-        mode = "n";
-        key = "<C-h>";
-        action = "<C-w>h";
-        options.silent = true;
-      }
-      {
-        mode = "n";
-        key = "<C-j>";
-        action = "<C-w>j";
-        options.silent = true;
-      }
-      {
-        mode = "n";
-        key = "<C-k>";
-        action = "<C-w>k";
-        options.silent = true;
-      }
-      {
-        mode = "n";
-        key = "<C-l>";
-        action = "<C-w>l";
-        options.silent = true;
-      }
-      # Naviagate buffers
-      {
-        mode = "n";
-        key = "<TAB>";
-        action = ":bnext<CR>";
-        options.silent = true;
-      }
-      {
-        mode = "n";
-        key = "<S-TAB>";
-        action = ":bprevious<CR>";
-        options.silent = true;
-      }
-      # Stay in indent mode
-      {
-        mode = "v";
-        key = "<";
-        action = "<gv";
-        options.silent = true;
-      }
-      {
-        mode = "v";
-        key = ">";
-        action = ">gv";
-        options.silent = true;
-      }
-      # Move text up and down
-      {
-        mode = "x";
-        key = "J";
-        action = ":move '>+1<CR>gv-gv";
-        options.silent = true;
-      }
-      {
-        mode = "x";
-        key = "K";
-        action = ":move '<-2<CR>gv-gv";
-        options.silent = true;
-      }
-      {
-        mode = "v";
-        key = "J";
-        action = ":move '>+1<CR>gv-gv";
-        options.silent = true;
-      }
-      {
-        mode = "v";
-        key = "K";
-        action = ":move '<-2<CR>gv-gv";
-        options.silent = true;
-      }
-      # Better split screen
-      {
-        mode = "";
-        key = "s";
-        action = "<Nop>";
-        options.silent = true;
-      }
-      {
-        mode = "n";
-        key = "sl";
-        action = ":set splitright<CR>:vsplit<CR>";
-        options.silent = true;
-      }
-      {
-        mode = "n";
-        key = "sh";
-        action = ":set nosplitright<CR>:vsplit<CR>";
-        options.silent = true;
-      }
-      {
-        mode = "n";
-        key = "sk";
-        action = ":set nosplitbelow<CR>:split<CR>";
-        options.silent = true;
-      }
-      {
-        mode = "n";
-        key = "sj";
-        action = ":set splitbelow<CR>:split<CR>";
-        options.silent = true;
-      }
-      {
-        mode = "n";
-        key = "<C-=>";
-        action = "<C-w>=";
-        options.desc = "average adjustment window";
-        options.silent = true;
-      }
-      # Swap and move windows
-      {
-        mode = "n";
-        key = "<Space>h";
-        action = "<C-w>H";
-        options.silent = true;
-      }
-      {
-        mode = "n";
-        key = "<Space>j";
-        action = "<C-w>J";
-        options.silent = true;
-      }
-      {
-        mode = "n";
-        key = "<Space>k";
-        action = "<C-w>K";
-        options.silent = true;
-      }
-      {
-        mode = "n";
-        key = "<Space>l";
-        action = "<C-w>L";
-        options.silent = true;
-      }
-      # Adjust the direction of the split screen
-      {
-        mode = "n";
-        key = ",";
-        action = "<C-w>t<C-w>K";
-        options.silent = true;
-      }
-      {
-        mode = "n";
-        key = ".";
-        action = "<C-w>t<C-w>H";
-        options.silent = true;
-      }
-      # Resize the window
-      {
-        mode = "n";
-        key = "<C-Down>";
-        action = ":resize -2<CR>";
-        options.silent = true;
-      }
-      {
-        mode = "n";
-        key = "<C-Up>";
-        action = ":resize +2<CR>";
-        options.silent = true;
-      }
-      {
-        mode = "n";
-        key = "<C-Left>";
-        action = ":vertical resize -2<CR>";
-        options.silent = true;
-      }
-      {
-        mode = "n";
-        key = "<C-Right>";
-        action = ":vertical resize +2<CR>";
-        options.silent = true;
-      }
-      # Better viewing of search results
-      {
-        mode = "n";
-        key = "<Space><CR>";
-        action = ":nohlsearch<CR>";
-        options.silent = true;
-      }
-      {
-        mode = "n";
-        key = "n";
-        action = "nzz";
-        options.silent = true;
-      }
-      {
-        mode = "n";
-        key = "N";
-        action = "Nzz";
-        options.silent = true;
-      }
-      {
-        mode = "n";
-        key = "<C-n>";
-        action = ":tabnew<CR>";
-        options.desc = "new tab";
-        options.silent = true;
-      }
-      # Misc
-      {
-        mode = "n";
-        key = "<C-u>";
-        action = "5k";
-        options.silent = true;
-      }
-      {
-        mode = "n";
-        key = "<C-d>";
-        action = "5j";
-        options.silent = true;
-      }
-      {
-        mode = "n";
-        key = "<C-.>";
-        action = "$";
-        options.silent = true;
-      }
-      {
-        mode = "i";
-        key = "<C-.>";
-        action = "<ESC>$";
-        options.silent = true;
-      }
-      {
-        mode = "x";
-        key = "<C-.>";
-        action = "$";
-        options.silent = true;
-      }
-      {
-        mode = "v";
-        key = "<C-.>";
-        action = "$";
-        options.silent = true;
-      }
-      {
-        mode = "n";
-        key = "<C-,>";
-        action = "^";
-        options.silent = true;
-      }
-      {
-        mode = "i";
-        key = "<C-,>";
-        action = "<ESC>^";
-        options.silent = true;
-      }
-      {
-        mode = "x";
-        key = "<C-,>";
-        action = "^";
-        options.silent = true;
-      }
-      {
-        mode = "v";
-        key = "<C-,>";
-        action = "^";
-        options.silent = true;
-      }
-      {
-        mode = "n";
-        key = "<C-S>";
-        action = "<cmd>lua require("/spectre"/).toggle()<CR>";
-        options.silent = true;
-      }
-    ];
+let
+  map = mode: key: action: desc: {
+    inherit mode key action;
+    options = {
+      silent = true;
+    }
+    // (if desc == null then { } else { inherit desc; });
   };
+in
+{
+  globals.mapleader = " ";
+
+  keymaps = [
+    (map "" "<Space>" "<Nop>" null)
+    (map "n" "S" "<cmd>w<CR>" "Save file")
+    (map "n" "Q" "<cmd>qa<CR>" "Quit Neovim")
+    (map "i" "jk" "<Esc>" "Exit insert mode")
+
+    # Window navigation
+    (map "n" "<C-h>" "<C-w>h" "Window left")
+    (map "n" "<C-j>" "<C-w>j" "Window down")
+    (map "n" "<C-k>" "<C-w>k" "Window up")
+    (map "n" "<C-l>" "<C-w>l" "Window right")
+
+    # Buffers
+    (map "n" "<Tab>" "<cmd>bnext<CR>" "Next buffer")
+    (map "n" "<S-Tab>" "<cmd>bprevious<CR>" "Previous buffer")
+
+    # Visual-only ("x", not "v"): "v" also covers select mode, where typing a
+    # capital J or K must replace the selection rather than move lines.
+    (map "x" "<" "<gv" "Indent left and reselect")
+    (map "x" ">" ">gv" "Indent right and reselect")
+    (map "x" "J" ":move '>+1<CR>gv=gv" "Move selection down")
+    (map "x" "K" ":move '<-2<CR>gv=gv" "Move selection up")
+
+    # Splits. `s` is freed for them; `ss` is the Lspsaga outline.
+    (map "" "s" "<Nop>" null)
+    (map "n" "sl" "<cmd>set splitright<CR><cmd>vsplit<CR>" "Split right")
+    (map "n" "sh" "<cmd>set nosplitright<CR><cmd>vsplit<CR>" "Split left")
+    (map "n" "sk" "<cmd>set nosplitbelow<CR><cmd>split<CR>" "Split above")
+    (map "n" "sj" "<cmd>set splitbelow<CR><cmd>split<CR>" "Split below")
+    (map "n" "<C-=>" "<C-w>=" "Equalize windows")
+
+    # Move windows
+    (map "n" "<Leader>h" "<C-w>H" "Move window far left")
+    (map "n" "<Leader>j" "<C-w>J" "Move window to bottom")
+    (map "n" "<Leader>k" "<C-w>K" "Move window to top")
+    (map "n" "<Leader>l" "<C-w>L" "Move window far right")
+
+    # Flip the layout between stacked and side-by-side. These were bare `,` and
+    # `.`, which took away `,` (repeat f/t backwards) and `.` (dot-repeat).
+    (map "n" "<Leader>," "<C-w>t<C-w>K" "Stack windows")
+    (map "n" "<Leader>." "<C-w>t<C-w>H" "Windows side by side")
+
+    # Resize
+    (map "n" "<C-Down>" "<cmd>resize -2<CR>" "Shrink height")
+    (map "n" "<C-Up>" "<cmd>resize +2<CR>" "Grow height")
+    (map "n" "<C-Left>" "<cmd>vertical resize -2<CR>" "Shrink width")
+    (map "n" "<C-Right>" "<cmd>vertical resize +2<CR>" "Grow width")
+
+    # Search
+    (map "n" "<Leader><CR>" "<cmd>nohlsearch<CR>" "Clear search highlight")
+    (map "n" "n" "nzz" null)
+    (map "n" "N" "Nzz" null)
+
+    (map "n" "<C-n>" "<cmd>tabnew<CR>" "New tab")
+
+    # Misc
+    (map "n" "<C-u>" "5k" null)
+    (map "n" "<C-d>" "5j" null)
+    (map [ "n" "x" ] "<C-.>" "$" "End of line")
+    (map "i" "<C-.>" "<Esc>$" "End of line")
+    (map [ "n" "x" ] "<C-,>" "^" "First non-blank")
+    (map "i" "<C-,>" "<Esc>^" "First non-blank")
+  ];
 }

@@ -1,50 +1,49 @@
 { pkgs, ... }:
 {
-  plugins.dap = {
-    enable = true;
-    adapters = { };
-    signs = {
-      dapBreakpoint = {
-        text = "●";
-        texthl = "DapBreakpoint";
-      };
-      dapBreakpointCondition = {
-        text = "●";
-        texthl = "DapBreakpointCondition";
-      };
-      dapLogPoint = {
-        text = "◆";
-        texthl = "DapLogPoint";
-      };
-    };
-    extensions = {
-      dap-go = {
-        enable = true;
-        delve.path = "${pkgs.delve}/bin/dlv";
-      };
-      dap-ui = {
-        enable = true;
-      };
-      dap-virtual-text = {
-        enable = true;
+  plugins = {
+    dap = {
+      enable = true;
+      signs = {
+        dapBreakpoint = {
+          text = "●";
+          texthl = "DapBreakpoint";
+        };
+        dapBreakpointCondition = {
+          text = "●";
+          texthl = "DapBreakpointCondition";
+        };
+        dapLogPoint = {
+          text = "◆";
+          texthl = "DapLogPoint";
+        };
       };
     };
+    dap-go = {
+      enable = true;
+      settings.delve.path = "${pkgs.delve}/bin/dlv";
+    };
+    dap-ui.enable = true;
+    dap-virtual-text.enable = true;
   };
+
   keymaps = [
     {
       mode = "n";
       key = "<F6>";
-      action = "<cmd>lua require('dapui').toggle()<CR>";
+      action.__raw = "function() require('dapui').toggle() end";
       options = {
         silent = true;
-        desc = "Toggle dapui";
+        desc = "Toggle DAP UI";
       };
     }
     {
       mode = "n";
       key = "<C-b>";
-      action = "<cmd>lua require'dap'.toggle_breakpoint()<CR>";
-      options.silent = true;
+      action.__raw = "function() require('dap').toggle_breakpoint() end";
+      options = {
+        silent = true;
+        desc = "Toggle breakpoint";
+      };
     }
   ];
 }

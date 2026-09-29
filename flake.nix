@@ -1,64 +1,65 @@
 {
-  description = "Toutaboc's NixVim configuration";
+  description = "Gustavo Belfort's Neovim, configured with Nixvim";
 
   inputs = {
-    flake-parts.url = "github:hercules-ci/flake-parts";
+    # Nixvim's main branch tracks nixos-unstable; pairing it with anything else
+    # is unsupported and breaks on option renames.
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixvim = {
-      url = "github:nix-community/nixvim";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
-    nil.url = "github:oxalica/nil";
-    nixd.url = "github:nix-community/nixd";
-    pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
+
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
+
+    nixvim.url = "github:nix-community/nixvim";
+    nixvim.inputs.nixpkgs.follows = "nixpkgs";
+
+    git-hooks.url = "github:cachix/git-hooks.nix";
+    git-hooks.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = inputs@{ nixpkgs, nixvim, ... }:
-    let
-      nvim-config = import ./config;
-    in
-    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
-      imports = [
-        ./pre-commit-hooks.nix
+  outputs =
+    inputs@{ flake-parts, nixvim, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      imports = [ ./pre-commit-hooks.nix ];
+
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+        "x86_64-darwin"
+        "aarch64-darwin"
       ];
-      systems = nixpkgs.lib.systems.flakeExposed;
-      perSystem = { pkgs, system, config, ... }:
+
+      # The raw module, so a consumer can extend it (extra servers, a different
+      # colorscheme) with makeNixvimWithModule instead of forking the repo.
+      flake.nixvimModules.default = ./config;
+
+      perSystem =
+        {
+          pkgs,
+          system,
+          config,
+          ...
+        }:
         let
-          nixvimLib = nixvim.lib.${system};
-          nixvim' = nixvim.legacyPackages.${system};
-          nvim = nixvim'.makeNixvimWithModule {
-            inherit pkgs;
-            module = nvim-config;
-          };
+          module = ./config;
+          nvim = nixvim.legacyPackages.${system}.makeNixvimWithModule { inherit pkgs module; };
         in
         {
-          _module.args.pkgs = import inputs.nixpkgs {
-            inherit system;
-            overlays = [
-              # inputs.neovim-nightly-overlay.overlay
-              inputs.nixd.overlays.default
-              # inputs.nil.overlays.default
-            ];
-          };
-          checks = {
-            # Run `nix flake check .` to verify that your config is not broken
-            default = nixvimLib.check.mkTestDerivationFromNvim {
-              inherit nvim;
-              name = "A nixvim configuration";
-            };
-          };
           packages = {
             default = nvim;
-            nvim = nvim;
+            inherit nvim;
           };
-          formatter = pkgs.nixpkgs-fmt;
-          devShells = {
-            default = pkgs.mkShell {
-              shellHook = ''
-                ${config.pre-commit.installationScript}
-              '';
-            };
+
+          # `nix flake check` starts the built Neovim headless and fails on any
+          # error or warning raised while loading the config.
+          checks.default = nixvim.lib.${system}.check.mkTestDerivationFromNixvimModule {
+            inherit pkgs module;
+            name = "nvim-config";
+          };
+
+          formatter = pkgs.nixfmt-tree;
+
+          devShells.default = pkgs.mkShell {
+            shellHook = config.pre-commit.installationScript;
           };
         };
     };

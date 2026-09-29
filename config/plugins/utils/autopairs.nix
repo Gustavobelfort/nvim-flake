@@ -1,5 +1,3 @@
 {
-  plugins.spectre = {
-    enable = true;
-  };
+  plugins.nvim-autopairs.enable = true;
 }

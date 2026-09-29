@@ -1,7 +1,10 @@
 {
   plugins.lualine = {
     enable = true;
-    globalstatus = true;
-    theme = "nord";
+    settings.options = {
+      globalstatus = true;
+      # Was "nord", which clashed with the Catppuccin colorscheme.
+      theme = "catppuccin";
+    };
   };
 }

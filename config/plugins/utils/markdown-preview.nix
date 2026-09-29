@@ -1,16 +1,17 @@
 {
   plugins.markdown-preview = {
     enable = true;
-    theme = "dark";
+    settings.theme = "dark";
   };
+
   keymaps = [
     {
       mode = "n";
       key = "mp";
-      action = "<cmd>MarkdownPreview<cr>";
+      action = "<cmd>MarkdownPreviewToggle<CR>";
       options = {
         silent = true;
-        desc = "toggle markdown-preview";
+        desc = "Toggle Markdown preview";
       };
     }
   ];

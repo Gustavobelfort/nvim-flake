@@ -1,10 +1,9 @@
-{ inputs, ... }: {
-  imports = [ inputs.pre-commit-hooks.flakeModule ];
+{ inputs, ... }:
+{
+  imports = [ inputs.git-hooks.flakeModule ];
 
-  perSystem.pre-commit = {
-    settings.hooks = {
-      nixpkgs-fmt.enable = true;
-      prettier.enable = true;
-    };
+  perSystem.pre-commit.settings.hooks = {
+    nixfmt.enable = true;
+    prettier.enable = true;
   };
 }

@@ -3,7 +3,7 @@
     ./lsp/lspsaga.nix
     ./lsp/lsp.nix
     ./lsp/trouble.nix
-    ./lsp/none-ls.nix
+    ./lsp/conform.nix
     ./tabline/bufferline.nix
     ./statusline/lualine.nix
     ./colorschemes/catppuccin.nix
@@ -16,13 +16,11 @@
     ./keybinding/which-key.nix
     ./syntax/treesitter.nix
     ./syntax/rainbow-delimiters.nix
-    ./syntax/ts-context-commentstring.nix
     ./syntax/vim-nix.nix
     ./fuzzyFinder/telescope.nix
     ./fileExplorer/nvim-tree.nix
     ./completion/nvim-cmp.nix
     ./debug/nvim-dap.nix
-  ] ++ [
     ./utils/undotree.nix
     ./utils/surround.nix
     ./utils/noice.nix
@@ -31,5 +29,6 @@
     ./utils/markdown-preview.nix
     ./utils/autopairs.nix
     ./utils/spectre.nix
+    ./utils/web-devicons.nix
   ];
 }
