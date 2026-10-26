@@ -6,6 +6,28 @@ let
     }
     // (if desc == null then { } else { inherit desc; });
   };
+  navMap = key: wincmd: dir: {
+    mode = "n";
+    inherit key;
+    action.__raw = ''
+      function()
+        local prev = vim.api.nvim_get_current_win()
+        vim.cmd("wincmd ${wincmd}")
+        local pane = vim.env.HERDR_PANE_ID
+        if vim.api.nvim_get_current_win() == prev and pane and pane ~= "" then
+          -- --pane, not --current: --current is the server's focused pane,
+          -- which need not be the one this nvim runs in.
+          local herdr = vim.env.HERDR_BIN_PATH
+          if not herdr or herdr == "" then herdr = "herdr" end
+          vim.fn.system({ herdr, "pane", "focus", "--direction", "${dir}", "--pane", pane })
+        end
+      end
+    '';
+    options = {
+      silent = true;
+      desc = "Window ${dir} (or herdr pane)";
+    };
+  };
 in
 {
   globals.mapleader = " ";
@@ -16,11 +38,13 @@ in
     (map "n" "Q" "<cmd>qa<CR>" "Quit Neovim")
     (map "i" "jk" "<Esc>" "Exit insert mode")
 
-    # Window navigation
-    (map "n" "<C-h>" "<C-w>h" "Window left")
-    (map "n" "<C-j>" "<C-w>j" "Window down")
-    (map "n" "<C-k>" "<C-w>k" "Window up")
-    (map "n" "<C-l>" "<C-w>l" "Window right")
+    # Window navigation that falls through to herdr at a split edge, the other
+    # half of the vim-herdr-navigation herdr plugin (vim-tmux-navigator for
+    # herdr). Outside herdr, $HERDR_PANE_ID is unset and this is plain wincmd.
+    (navMap "<C-h>" "h" "left")
+    (navMap "<C-j>" "j" "down")
+    (navMap "<C-k>" "k" "up")
+    (navMap "<C-l>" "l" "right")
 
     # Buffers
     (map "n" "<Tab>" "<cmd>bnext<CR>" "Next buffer")
