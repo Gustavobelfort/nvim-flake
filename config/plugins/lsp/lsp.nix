@@ -6,17 +6,6 @@
 
   lsp = {
     servers = {
-      # Advertise nvim-cmp's completion capabilities to every server. The old
-      # config computed these and then overwrote them on the next line.
-      "*".config.capabilities.__raw = ''
-        vim.tbl_deep_extend(
-          "force",
-          vim.lsp.protocol.make_client_capabilities(),
-          require("cmp_nvim_lsp").default_capabilities(),
-          { textDocument = { foldingRange = { dynamicRegistration = false, lineFoldingOnly = true } } }
-        )
-      '';
-
       nixd = {
         enable = true;
         # Which nixpkgs and which option sets nixd completes against is the
@@ -54,26 +43,66 @@
     };
 
     onAttach = ''
-      -- Show the current line's diagnostics in a float when the cursor rests.
-      vim.api.nvim_create_autocmd("CursorHold", {
-        buffer = bufnr,
-        callback = function()
-          vim.diagnostic.open_float(nil, {
-            focusable = false,
-            close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
-            border = "rounded",
-            source = "always",
-            prefix = " ",
-            scope = "line",
-          })
-        end,
-      })
-
       if client.name == "rust_analyzer" then
         vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
       end
     '';
   };
+
+  # Registered on LspAttach, per buffer, so they win over the buffer-local
+  # defaults Neovim installs when a server attaches. Navigation goes through the
+  # snacks picker; everything else is the built-in vim.lsp.buf. Neovim's own
+  # grn/gra/grr/gri defaults stay available too.
+  lsp.keymaps =
+    let
+      map = mode: key: lua: desc: {
+        inherit mode key;
+        action.__raw = "function() ${lua} end";
+        options = {
+          silent = true;
+          inherit desc;
+        };
+      };
+      n = map "n";
+    in
+    [
+      (n "gd" "Snacks.picker.lsp_definitions()" "Go to definition")
+      (n "gD" "Snacks.picker.lsp_declarations()" "Go to declaration")
+      (n "gr" "Snacks.picker.lsp_references()" "References")
+      (n "gI" "Snacks.picker.lsp_implementations()" "Go to implementation")
+      (n "gy" "Snacks.picker.lsp_type_definitions()" "Go to type definition")
+      (n "<Leader>ci" "Snacks.picker.lsp_incoming_calls()" "Incoming calls")
+      (n "<Leader>co" "Snacks.picker.lsp_outgoing_calls()" "Outgoing calls")
+      (n "K" "vim.lsp.buf.hover({ border = 'rounded' })" "Hover documentation")
+      (map "i" "<C-k>" "vim.lsp.buf.signature_help({ border = 'rounded' })" "Signature help")
+      (map [ "n" "x" ] "<Leader>ca" "vim.lsp.buf.code_action()" "Code action")
+      (n "<Leader>cr" "vim.lsp.buf.rename()" "Rename symbol")
+      (n "<Leader>cl" "Snacks.picker.lsp_config()" "LSP info")
+    ];
+
+  keymaps = [
+    {
+      mode = "n";
+      key = "<Leader>cd";
+      action.__raw = "function() vim.diagnostic.open_float({ border = 'rounded' }) end";
+      options = {
+        silent = true;
+        desc = "Line diagnostics";
+      };
+    }
+    {
+      mode = [
+        "n"
+        "x"
+      ];
+      key = "<Leader>cf";
+      action.__raw = "function() require('conform').format({ lsp_format = 'fallback' }) end";
+      options = {
+        silent = true;
+        desc = "Format";
+      };
+    }
+  ];
 
   diagnostic.settings = {
     virtual_text = false;

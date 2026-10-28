@@ -7,7 +7,7 @@
   keymaps = [
     {
       mode = "n";
-      key = "mp";
+      key = "<Leader>cp";
       action = "<cmd>MarkdownPreviewToggle<CR>";
       options = {
         silent = true;

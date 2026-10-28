@@ -46,9 +46,8 @@ in
     (navMap "<C-k>" "k" "up")
     (navMap "<C-l>" "l" "right")
 
-    # Buffers
-    (map "n" "<Tab>" "<cmd>bnext<CR>" "Next buffer")
-    (map "n" "<S-Tab>" "<cmd>bprevious<CR>" "Previous buffer")
+    # Buffers are <S-h>/<S-l> and [b/]b (tabline/bufferline.nix). <Tab> was
+    # bnext, but terminals send it as <C-i>, which took away jump-forward.
 
     # Visual-only ("x", not "v"): "v" also covers select mode, where typing a
     # capital J or K must replace the selection rather than move lines.
@@ -57,7 +56,7 @@ in
     (map "x" "J" ":move '>+1<CR>gv=gv" "Move selection down")
     (map "x" "K" ":move '<-2<CR>gv=gv" "Move selection up")
 
-    # Splits. `s` is freed for them; `ss` is the Lspsaga outline.
+    # Splits. `s` is freed for them.
     (map "" "s" "<Nop>" null)
     (map "n" "sl" "<cmd>set splitright<CR><cmd>vsplit<CR>" "Split right")
     (map "n" "sh" "<cmd>set nosplitright<CR><cmd>vsplit<CR>" "Split left")
@@ -83,15 +82,17 @@ in
     (map "n" "<C-Right>" "<cmd>vertical resize +2<CR>" "Grow width")
 
     # Search
-    (map "n" "<Leader><CR>" "<cmd>nohlsearch<CR>" "Clear search highlight")
+    (map "n" "<Esc>" "<cmd>nohlsearch<CR><Esc>" "Clear search highlight")
     (map "n" "n" "nzz" null)
     (map "n" "N" "Nzz" null)
 
     (map "n" "<C-n>" "<cmd>tabnew<CR>" "New tab")
+    (map "n" "<Leader>fn" "<cmd>enew<CR>" "New file")
 
     # Misc
-    (map "n" "<C-u>" "5k" null)
-    (map "n" "<C-d>" "5j" null)
+    # Half-page scrolls that keep the cursor line centred. These were 5k/5j.
+    (map "n" "<C-u>" "<C-u>zz" null)
+    (map "n" "<C-d>" "<C-d>zz" null)
     (map [ "n" "x" ] "<C-.>" "$" "End of line")
     (map "i" "<C-.>" "<Esc>$" "End of line")
     (map [ "n" "x" ] "<C-,>" "^" "First non-blank")

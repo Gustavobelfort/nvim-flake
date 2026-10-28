@@ -26,24 +26,31 @@
     dap-virtual-text.enable = true;
   };
 
-  keymaps = [
-    {
-      mode = "n";
-      key = "<F6>";
-      action.__raw = "function() require('dapui').toggle() end";
-      options = {
-        silent = true;
-        desc = "Toggle DAP UI";
+  keymaps =
+    let
+      dap = key: lua: desc: {
+        mode = "n";
+        inherit key;
+        action.__raw = "function() ${lua} end";
+        options = {
+          silent = true;
+          inherit desc;
+        };
       };
-    }
-    {
-      mode = "n";
-      key = "<C-b>";
-      action.__raw = "function() require('dap').toggle_breakpoint() end";
-      options = {
-        silent = true;
-        desc = "Toggle breakpoint";
-      };
-    }
-  ];
+    in
+    [
+      (dap "<F6>" "require('dapui').toggle()" "Toggle DAP UI")
+      (dap "<Leader>du" "require('dapui').toggle()" "Toggle DAP UI")
+      # Was <C-b>, which took away scroll-back-a-page.
+      (dap "<Leader>db" "require('dap').toggle_breakpoint()" "Toggle breakpoint")
+      (dap "<Leader>dB" "require('dap').set_breakpoint(vim.fn.input('Condition: '))"
+        "Conditional breakpoint"
+      )
+      (dap "<Leader>dc" "require('dap').continue()" "Continue")
+      (dap "<Leader>di" "require('dap').step_into()" "Step into")
+      (dap "<Leader>do" "require('dap').step_over()" "Step over")
+      (dap "<Leader>dO" "require('dap').step_out()" "Step out")
+      (dap "<Leader>dr" "require('dap').repl.toggle()" "Toggle REPL")
+      (dap "<Leader>dt" "require('dap').terminate()" "Terminate")
+    ];
 }

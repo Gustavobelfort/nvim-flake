@@ -13,7 +13,7 @@
     shiftwidth = 4;
     tabstop = 4;
     cmdheight = 1;
-    cursorline = false;
+    cursorline = true;
     cursorcolumn = false;
     number = true;
     numberwidth = 4;
@@ -27,8 +27,15 @@
     # latin1 rather than the upstream gbk: it is the fallback that matches
     # Portuguese text files that are not UTF-8.
     fileencodings = "utf-8,latin1";
-    # Also how soon CursorHold fires, which opens the diagnostic float.
-    updatetime = 50;
+    # How soon the swap file is written and CursorHold fires. Was 50, for a
+    # diagnostic float that tiny-inline-diagnostic replaces.
+    updatetime = 250;
+    # Live preview of :s substitutions in a split.
+    inccommand = "split";
+    # Opening or closing a split keeps the text where it is on screen.
+    splitkeep = "screen";
+    # Ask to save instead of failing :q on a modified buffer.
+    confirm = true;
     # Folds are computed by treesitter but start fully open.
     foldenable = false;
     foldlevel = 99;

@@ -1,15 +1,13 @@
 {
   imports = [
-    ./lsp/lspsaga.nix
     ./lsp/lsp.nix
     ./lsp/trouble.nix
     ./lsp/conform.nix
+    ./lsp/tiny-inline-diagnostic.nix
     ./tabline/bufferline.nix
     ./statusline/lualine.nix
     ./colorschemes/catppuccin.nix
     ./motion/flash.nix
-    ./indent/indent-blankline.nix
-    ./terminal/toggleterm.nix
     ./git/gitsigns.nix
     ./git/diffview.nix
     ./git/neogit.nix
@@ -17,18 +15,16 @@
     ./syntax/treesitter.nix
     ./syntax/rainbow-delimiters.nix
     ./syntax/vim-nix.nix
-    ./fuzzyFinder/telescope.nix
-    ./fileExplorer/nvim-tree.nix
-    ./completion/nvim-cmp.nix
+    ./fileExplorer/oil.nix
+    ./completion/blink-cmp.nix
     ./debug/nvim-dap.nix
-    ./utils/undotree.nix
-    ./utils/surround.nix
+    ./editing/mini.nix
+    ./editing/grug-far.nix
+    ./utils/snacks.nix
     ./utils/noice.nix
-    ./utils/comment-nvim.nix
     ./utils/todo-comments.nix
     ./utils/markdown-preview.nix
-    ./utils/autopairs.nix
-    ./utils/spectre.nix
-    ./utils/web-devicons.nix
+    ./utils/render-markdown.nix
+    ./utils/persistence.nix
   ];
 }
